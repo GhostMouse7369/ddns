@@ -1,0 +1,68 @@
+plugins {
+    id 'org.jetbrains.kotlin.multiplatform'
+}
+
+group 'top.laoshuzi.ddns'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven { url "https://kotlin.bintray.com/kotlinx" }
+}
+
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                api "org.jetbrains.kotlin:kotlin-stdlib-common:$KotlinVersion"
+                api "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$KotlinxCoroutinesVersion"
+                api "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$KotlinxSerializationVersion"
+                api "io.ktor:ktor-client-core:$ktorVersion"
+//                implementation "io.reactivex.rxjava2:rxkotlin:2.3.0"
+            }
+        }
+        jvmMain {
+            dependencies {
+//                implementation "org.jetbrains.kotlin:kotlin-reflect:$KotlinVersion"
+                implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$KotlinVersion"
+                implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$KotlinVersion"
+                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$KotlinxCoroutinesVersion"
+            }
+        }
+        jsMain {
+
+        }
+        mingwMain {
+            dependencies {
+                implementation "org.jetbrains.kotlin:kotlin-stdlib:$KotlinVersion"
+                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$KotlinxCoroutinesVersion"
+                implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$KotlinxSerializationVersion"
+                implementation "io.ktor:ktor-client-curl:$ktorVersion"
+            }
+        }
+        linuxMain {
+            dependencies {
+                implementation "org.jetbrains.kotlin:kotlin-stdlib:$KotlinVersion"
+                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$KotlinxCoroutinesVersion"
+                implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$KotlinxSerializationVersion"
+                implementation "io.ktor:ktor-client-curl:$ktorVersion"
+            }
+        }
+    }
+    jvm("jvm8") {
+        compilations.main {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+    }
+    js("nodeJs")
+    mingwX64('mingw') {
+        binaries {
+            executable("ddns") {
+                entryPoint = "top.laoshuzi.ddns.main"
+            }
+        }
+    }
+}

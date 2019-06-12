@@ -1,0 +1,41 @@
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+
+            groupId project.group
+            artifactId project.name
+            version project.version
+
+            from components.java
+
+            artifact sourceJar
+            artifact javadocJar
+        }
+    }
+
+    repositories {
+        maven {
+            url = EggSnapShots
+            credentials {
+                username EggNexusUserName
+                password EggNexusPassword
+            }
+        }
+    }
+}
+
+task sourceJar(type: Jar, dependsOn: classes) {
+    classifier 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+tasks.withType(Javadoc) {
+    options.encoding = 'UTF-8'
+}

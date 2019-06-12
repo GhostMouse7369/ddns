@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'org.jetbrains.kotlin.plugin.spring'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+group 'top.laoshuzi.ddns'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/service/local/staging/deploy/maven2/" }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$KotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$KotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$KotlinxCoroutinesVersion"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$KotlinVersion"
+    // springboot
+    implementation "org.springframework.boot:spring-boot-starter"
+    implementation "org.yaml:snakeyaml:1.23"
+//                        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    // dev tools
+//    implementation('org.projectlombok:lombok:1.18.4')
+//    implementation('org.slf4j:slf4j-api:1.7.25')
+//    implementation('com.fasterxml.jackson.core:jackson-annotations:2.9.7')
+//    implementation('com.fasterxml.jackson.core:jackson-databind:2.9.7')
+//    implementation('com.alibaba:fastjson:1.2.56')
+    // apache commons
+    implementation('org.apache.commons:commons-lang3:3.8')
+    implementation('org.apache.commons:commons-collections4:4.3')
+    // aliyun
+    implementation "com.aliyun:aliyun-java-sdk-core:3.2.2"
+    implementation "com.aliyun:aliyun-java-sdk-alidns:2.0.7"
+    // http
+    implementation "com.squareup.okhttp3:okhttp:3.8.0"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}

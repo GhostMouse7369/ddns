@@ -1,0 +1,23 @@
+plugins {
+    id 'org.jetbrains.kotlin.multiplatform' version '1.3.21' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.3.21' apply false
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.3.21'
+    id 'org.springframework.boot' version '2.0.3.RELEASE' apply false
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE' apply false
+}
+
+ext {
+    KotlinVersion = '1.3.21'
+    KotlinxCoroutinesVersion = '1.2.1'
+    KotlinxSerializationVersion = '0.11.0'
+    ktorVersion = '1.2.1'
+    springBootKotlinVersion = '1.3.21'
+    springBootVersion = '2.0.3.RELEASE'
+    dependencyManagementVersion = '1.0.6.RELEASE'
+
+    mysqlVersion = '8.0.13'
+    swaggerVersion = '2.8.0'
+}
+
+group 'top.laoshuzi.ddns'
+version '1.0-SNAPSHOT'

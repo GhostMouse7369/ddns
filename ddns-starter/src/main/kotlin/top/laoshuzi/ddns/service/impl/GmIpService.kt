@@ -2,6 +2,7 @@ package top.laoshuzi.ddns.service.impl
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import top.laoshuzi.ddns.properties.DdnsProperties
@@ -13,6 +14,8 @@ import java.util.regex.Pattern
  */
 @Service
 class GmIpService : IpService {
+
+    private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @Autowired
     var ddnsProperties: DdnsProperties = DdnsProperties()
@@ -36,7 +39,7 @@ class GmIpService : IpService {
             ip = m.group(0)
         }
 
-        println("获取:[IP=$ip]")
+        logger.info("获取:[IP=$ip]")
 
         return ip
     }

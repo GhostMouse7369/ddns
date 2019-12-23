@@ -4,6 +4,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
@@ -23,6 +24,8 @@ import java.util.*
  */
 @Component
 class DdnsRunner : CommandLineRunner {
+
+    private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @Autowired
     var ddnsProperties: DdnsProperties = DdnsProperties()
@@ -47,16 +50,16 @@ class DdnsRunner : CommandLineRunner {
 
                 delay(1000)
                 while (true) {
-                    println("==============[${getNowTime()}]==============")
+                    logger.info("==============[${getNowTime()}]==============")
 
                     // 获取Ip
                     var ip: String? = null
 
-                    println("来自[${ddnsProperties.config.ipUrl}]")
+                    logger.info("来自[${ddnsProperties.config.ipUrl}]")
                     for (i in 1..3) {
                         if (!StringUtils.isEmpty(ip))
                             break
-                        println("获取IP地址:第${i}次")
+                        logger.info("获取IP地址:第${i}次")
                         ip = ipService.getLocalOutIp()
                     }
 
@@ -74,7 +77,7 @@ class DdnsRunner : CommandLineRunner {
                                 }
                         // 遍历解析记录
                         domain.rrs.forEach { rr ->
-                            println("同步解析记录-->$rr.${domain.domainName}")
+                            logger.info("同步解析记录-->$rr.${domain.domainName}")
                             val record = records[rr]
                             if (record == null) {
                                 // 添加记录
@@ -84,12 +87,12 @@ class DdnsRunner : CommandLineRunner {
                                     rR = rr
                                     value = ip
                                 }
-                                println("添加解析记录-->${addRecordDTO.toString()}")
+                                logger.info("添加解析记录-->${addRecordDTO.toString()}")
                                 domainRecordsService.addDomainRecord(addRecordDTO)
                             } else {
                                 // 更新记录
                                 if (record.value == ip) {
-                                    println("IP地址无需变更")
+                                    logger.info("IP地址无需变更")
                                 } else {
                                     val updateRecordDTO = UpdateRecordDTO().apply {
                                         recordId = record.recordId
@@ -97,7 +100,7 @@ class DdnsRunner : CommandLineRunner {
                                         rR = record.rR
                                         value = ip
                                     }
-                                    println("更新解析记录-->${updateRecordDTO.toString()}")
+                                    logger.info("更新解析记录-->${updateRecordDTO.toString()}")
                                     domainRecordsService.updateDomainRecord(updateRecordDTO)
                                 }
                             }
@@ -105,7 +108,7 @@ class DdnsRunner : CommandLineRunner {
 
                     }
 
-                    println("=================================================")
+                    logger.info("=================================================")
                     delay(300000)
                 }
 
@@ -113,7 +116,7 @@ class DdnsRunner : CommandLineRunner {
 
             // 挂起
             runBlocking {
-                println("ddns service is starting...")
+                logger.info("ddns service is starting...")
                 launch.join()
             }
 
